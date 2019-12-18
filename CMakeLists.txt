@@ -26,12 +26,7 @@ list(APPEND ${PROJECT_NAME}_LINK_FLAGS ${OpenMP_CXX_FLAGS})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/PNG ${CMAKE_CURRENT_SOURCE_DIR}/JPEG ${CMAKE_CURRENT_SOURCE_DIR}/ZLIB)
 
-## JPEG
-file(GLOB srcs "${CMAKE_CURRENT_SOURCE_DIR}/JPEG/*.h"
-               "${CMAKE_CURRENT_SOURCE_DIR}/JPEG/*.cpp")
-
-add_library(MyJPEG ${${PROJECT_NAME}_LIB_TYPE} ${srcs})
-
+add_subdirectory(JPEG)
 add_subdirectory(ZLIB)
 add_subdirectory(PNG)
 
