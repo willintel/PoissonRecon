@@ -15,7 +15,8 @@ if(${PROJECT_NAME}_BUILD_SHARED_LIBS)
 endif()
 option(${PROJECT_NAME}_WITH_APPS "Build Apps" ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -Wno-deprecated -std=c++11 -pthread -Wno-invalid-offsetof")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -Wno-deprecated -std=c++11 -pthread -Wno-invalid-offsetof  -fPIC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fPIC")
 
 add_subdirectory(openmp)
 
@@ -31,7 +32,7 @@ file(GLOB srcs "${CMAKE_CURRENT_SOURCE_DIR}/JPEG/*.h"
 
 add_library(MyJPEG ${${PROJECT_NAME}_LIB_TYPE} ${srcs})
 
-## PNG
+add_subdirectory(ZLIB)
 add_subdirectory(PNG)
 
 ## Main library ================================================================
@@ -52,7 +53,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 if(${PROJECT_NAME}_WITH_APPS)
   add_executable(PoissonReconApp ${pr_src})
   target_link_libraries(PoissonReconApp ${PROJECT_NAME} Ext::OpenMP MyJPEG MyPNG)
-  set_property(TARGET PoissonReconApp PROPERTY LINK_FLAGS ${${PROJECT_NAME}_LINK_FLAGS})
+  set_property(TARGET PoissonReconApp PROPERTY LINK_FLAGS "${${PROJECT_NAME}_LINK_FLAGS} -lz")
   # set_property(TARGET PoissonReconApp PROPERTY COMPILE_FLAGS "-fopenmp -Wno-deprecated -std=c++11 -pthread -Wno-invalid-offsetof")
   add_executable(SurfaceTrimmer ${st_src})
   target_link_libraries(SurfaceTrimmer ${PROJECT_NAME} Ext::OpenMP MyJPEG MyPNG)
